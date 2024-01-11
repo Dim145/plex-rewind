@@ -21,23 +21,27 @@ type Props = {
 
 export default async function Rewind({ searchParams }: Props) {
   const session = await getServerSession(authOptions)
-  console.log(session)
+  console.log('Your session is:', session)
 
   if (!session?.user) {
     return
   }
 
   let user = session.user
+  console.log('Your user data is:', user)
   const managedUserId = searchParams?.userId
 
   if (managedUserId) {
+    console.log("You're a managed user with ID:", managedUserId)
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_SITE_URL}/api/managed-users?userId=${session.user.id}`,
     )
     const data: TautulliUser[] = await res.json()
+    console.log('This is the data for all managed users:', data)
     const managedUser = data?.find(
       (user) => user.user_id === Number(managedUserId),
     )
+    console.log('This is your managed user obj:', managedUser)
 
     if (managedUser) {
       user = {
@@ -46,7 +50,11 @@ export default async function Rewind({ searchParams }: Props) {
         id: managedUserId,
       }
     }
+  } else {
+    console.log("You're not a managed user!")
   }
+
+  console.log('This is your user obj after managed user checks:', user)
 
   const libraries = await getLibraries()
   const [

@@ -44,13 +44,13 @@ export const authOptions: AuthOptions = {
           const jsonData = await parseStringPromise(xmlData)
           const data = jsonData.user.$
           const { title, id, thumb, email } = data
-          console.log('User data fetched from plex:', data)
           const userData = {
             id: id,
             name: title,
             email: email,
             image: thumb,
           }
+          console.log('User data fetched from Plex:', userData)
 
           if (res.ok && userData) {
             const checkUser = await fetchTautulli<{ email: string }>(
