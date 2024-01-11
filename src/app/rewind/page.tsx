@@ -21,6 +21,7 @@ type Props = {
 
 export default async function Rewind({ searchParams }: Props) {
   const session = await getServerSession(authOptions)
+  console.log(session)
 
   if (!session?.user) {
     return
